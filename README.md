@@ -11,7 +11,7 @@ Summary: A Python interface for Reinforcement Learning environments.
 
 Development: https://github.com/deepmind/dm_env
 
-Documentation: https://github.com/deepmind/dm_env/blob/1.3/docs/index.md
+Documentation: https://github.com/deepmind/dm_env/blob/1.4/docs/index.md
 
 Current build status
 ====================
