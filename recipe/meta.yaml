@@ -24,7 +24,6 @@ requirements:
     - dm-tree
     - numpy
     - python >=3.6
-    - six
 
 test:
   imports:
