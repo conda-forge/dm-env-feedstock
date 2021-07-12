@@ -1,5 +1,5 @@
 {% set name = "dm-env" %}
-{% set version = "1.4" %}
+{% set version = "1.5" %}
 
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: f3b987610f26d2c5d5579958efa39b054b54f13ef8eb7ec4abee65db987320eb
+    sha256: 3efd99b0652563599507c415d48b51896c88be2f01c2b6250af8bab51571e353
 
 build:
   number: 0
