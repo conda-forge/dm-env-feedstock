@@ -1,14 +1,12 @@
-{% set name = "dm-env" %}
 {% set version = "1.6" %}
 
-
 package:
-  name: {{ name }}
+  name: dm-env
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: a436eb1c654c39e0c986a516cee218bea7140b510fceff63f97eb4fcff3d93de
+  url: https://pypi.io/packages/source/d/dm-env/dm-env-{{ version }}.tar.gz
+  sha256: a436eb1c654c39e0c986a516cee218bea7140b510fceff63f97eb4fcff3d93de
 
 build:
   number: 0
@@ -30,10 +28,10 @@ test:
     - dm_env
   commands:
     - pip check
-    - nosetests dm_env
+    - pytest --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=100
   requires:
     - pip
-    - nose
+    - pytest-cov
 
 about:
   home: https://pypi.org/project/dm-env
