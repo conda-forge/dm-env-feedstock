@@ -28,7 +28,7 @@ test:
     - dm_env
   commands:
     - pip check
-    - pytest --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=98
+    - pytest -vv --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=98
   requires:
     - pip
     - pytest-cov
