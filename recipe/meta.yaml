@@ -5,33 +5,36 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/d/dm-env/dm-env-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/d/dm-env/dm-env-{{ version }}.tar.gz
   sha256: a436eb1c654c39e0c986a516cee218bea7140b510fceff63f97eb4fcff3d93de
 
 build:
-  number: 0
-  script: {{ PYTHON }} -m pip install . -vv --no-deps
+  number: 1
   noarch: python
+  script:
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
 
 requirements:
   host:
     - pip
-    - python >=3.7
+    - python {{ python_min }}
+    - setuptools
   run:
     - absl-py
     - dm-tree
     - numpy
-    - python >=3.7
+    - python >={{ python_min }}
 
 test:
+  requires:
+    - pip
+    - pytest-cov
+    - python {{ python_min }}
   imports:
     - dm_env
   commands:
     - pip check
     - pytest -vv --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=98
-  requires:
-    - pip
-    - pytest-cov
 
 about:
   home: https://pypi.org/project/dm-env
