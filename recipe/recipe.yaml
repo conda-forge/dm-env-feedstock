@@ -45,7 +45,7 @@ tests:
       run:
         - pip
         - pytest-cov
-        - python ${{ python_min }}
+        - python ${{ python_min }}.*
     script:
       - pytest -vv --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=98
 
