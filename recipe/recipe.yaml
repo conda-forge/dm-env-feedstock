@@ -1,48 +1,60 @@
-{% set version = "2.0" %}
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
+schema_version: 1
+
+context:
+  version: "2.0"
+  python_check_max: "3.15"
 
 package:
   name: dm-env
-  version: {{ version }}
+  version: ${{ version }}
 
 source:
-  url: https://files.pythonhosted.org/packages/source/d/dm-env/dm_env-{{ version }}.tar.gz
+  url: https://files.pythonhosted.org/packages/source/d/dm-env/dm_env-${{ version }}.tar.gz
   sha256: 4c018f684cd4173028c8a08eb1f62548a1eaf9b6a573b21461c86f6977369e72
 
 build:
   number: 0
   noarch: python
   script:
-    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
+    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check --check-build-dependencies
 
 requirements:
   host:
     - pip
-    - python {{ python_min }}
+    - python ${{ python_min }}.*
     - setuptools
   run:
     - absl-py
-    - dm-tree
     - numpy
-    - python >={{ python_min }}
+    - python >=${{ python_min }}
 
-test:
-  requires:
-    - pip
-    - pytest-cov
-    - python {{ python_min }}
-  imports:
-    - dm_env
-  commands:
-    - pip check
-    - pytest -vv --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=98
+tests:
+  - package_contents:
+      strict: true
+      site_packages:
+        - dm_env/**
+        - dm_env-${{ version }}.dist-info/**
+  - python:
+      imports: dm_env
+      pip_check: true
+      python_version:
+        - ${{ python_min }}.*
+        - ${{ python_check_max }}.*
+  - requirements:
+      run:
+        - pip
+        - pytest-cov
+        - python ${{ python_min }}
+    script:
+      - pytest -vv --pyargs dm_env --cov=dm_env --cov-report=term-missing:skip-covered --cov-fail-under=98
 
 about:
-  home: https://pypi.org/project/dm-env
   summary: A Python interface for Reinforcement Learning environments.
   license: Apache-2.0
   license_file: LICENSE
-  dev_url: https://github.com/deepmind/dm_env
-  doc_url: https://github.com/deepmind/dm_env/blob/{{ version }}/docs/index.md
+  homepage: https://pypi.org/project/dm-env
+  repository: https://github.com/deepmind/dm_env
 
 extra:
   recipe-maintainers:
