@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
+schema_version: 1
+
+context:
+  version: "2.0"
+  python_check_max: "3.15"
+
+package:
+  name: dm-env
+  version: ${{ version }}
+
+source:
+  url: https://files.pythonhosted.org/packages/source/d/dm-env/dm_env-${{ version }}.tar.gz
+  sha256: 4c018f684cd4173028c8a08eb1f62548a1eaf9b6a573b21461c86f6977369e72
+
+build:
+  number: 0
+  noarch: python
+  script:
+    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check --check-build-dependencies
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - absl-py
+    - numpy
+    - python >=${{ python_min }}
+
+tests:
+  - package_contents:
+      strict: true
+      site_packages:
+        - dm_env/**
+        - dm_env-${{ version }}.dist-info/**
+  - python:
+      imports: dm_env
+      pip_check: true
+      python_version:
+        - ${{ python_min }}.*
+        - ${{ python_check_max }}.*
+  - requirements:
+      run:
+        - dm-tree
+        - pip
+        - pytest-cov
+        - python ${{ python_min }}.*
+    script:
+      - coverage run --source=dm_env --branch -m pytest -vv --pyargs dm_env --tb=long --color=yes
+      - coverage report --show-missing --skip-covered --fail-under=98
+
+about:
+  summary: A Python interface for Reinforcement Learning environments.
+  license: Apache-2.0
+  license_file: LICENSE
+  homepage: https://pypi.org/project/dm-env
+  repository: https://github.com/deepmind/dm_env
+
+extra:
+  recipe-maintainers:
+    - bollwyvl
